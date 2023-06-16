@@ -57,14 +57,23 @@ function cart(db, printProducts) {
       countDOM.innerHTML = showItemsCount()
       totalDOM.innerHTML = showTotal()
     }
-  
+    
     function addToCart(id, qty = 1) {
-  
+      
       const itemFinded = cart.find(i => i.id === id)
-  
+      let stock = 0
+      for (const e of db) {
+        if (e.id === id) {
+          stock = e.quantity;
+        }
+      }
+      
       if (itemFinded) {
-  
-        itemFinded.qty += qty
+        if (itemFinded.qty < stock) {
+          itemFinded.qty += qty;
+        }
+        
+      
       } else {
         cart.push({id, qty})
       }
